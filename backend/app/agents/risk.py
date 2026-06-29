@@ -24,7 +24,8 @@ class RiskAgent:
 """
 
         return {
-            **state,
+
             "risk": risk,
+
             "risk_analysis": analysis
         }

@@ -23,7 +23,8 @@ class NewsAgent:
 """
 
         return {
-            **state,
+
             "news": news,
+
             "news_analysis": analysis
         }

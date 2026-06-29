@@ -18,6 +18,6 @@ class TechnicalAgent:
 """
 
         return {
-            **state,
+
             "technical_analysis": analysis
         }

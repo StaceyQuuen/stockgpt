@@ -24,3 +24,6 @@ class GraphState(TypedDict):
     risk_analysis: str | None
 
     final_report: str | None
+
+    # ⭐ 新增：并行控制字段
+    analysis_ready: bool

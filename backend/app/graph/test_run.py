@@ -1,4 +1,12 @@
+import os
+import sys
+
 from app.graph.workflow import build_graph
+
+
+os.system("chcp 65001 > nul")
+
+sys.stdout.reconfigure(encoding="utf-8")
 
 
 graph = build_graph()

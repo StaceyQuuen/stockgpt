@@ -23,6 +23,9 @@ def build_graph():
 
     report = ReportAgent()
 
+    # ======================
+    # 注册节点
+    # ======================
     graph.add_node("financial", financial.run)
 
     graph.add_node("news", news.run)
@@ -33,13 +36,25 @@ def build_graph():
 
     graph.add_node("report", report.run)
 
+    # ======================
+    # 并行入口（Fan-out）
+    # ======================
+
     graph.set_entry_point("financial")
 
     graph.add_edge("financial", "news")
 
-    graph.add_edge("news", "technical")
+    graph.add_edge("financial", "technical")
 
-    graph.add_edge("technical", "risk")
+    graph.add_edge("financial", "risk")
+
+    # ======================
+    # 汇总（Fan-in）
+    # ======================
+
+    graph.add_edge("news", "report")
+
+    graph.add_edge("technical", "report")
 
     graph.add_edge("risk", "report")
 

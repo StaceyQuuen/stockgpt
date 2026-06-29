@@ -1,27 +1,36 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 from app.api.v1.routes.analyze import router as analyze_router
 
+from app.core.trace import generate_trace_id, set_trace_id
 from app.core.logger import log
-from app.core.config import settings
 
 
-app = FastAPI(
-    title=settings.APP_NAME,
-    version="0.1.0"
-)
+app = FastAPI(title="StockGPT", version="0.1.0")
 
 
-app.include_router(
-    analyze_router,
-    prefix="/api/v1"
-)
+# =========================
+# Trace Middleware
+# =========================
+@app.middleware("http")
+async def trace_middleware(request: Request, call_next):
+
+    trace_id = generate_trace_id()
+
+    set_trace_id(trace_id)
+
+    log.info(f"[{trace_id}] Request started: {request.url}")
+
+    response = await call_next(request)
+
+    response.headers["X-Trace-Id"] = trace_id
+
+    log.info(f"[{trace_id}] Request finished")
+
+    return response
 
 
-@app.on_event("startup")
-def startup():
-
-    log.info(f"{settings.APP_NAME} API started")
+app.include_router(analyze_router, prefix="/api/v1")
 
 
 @app.get("/health")

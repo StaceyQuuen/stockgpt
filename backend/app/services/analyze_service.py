@@ -1,36 +1,31 @@
-from app.services.stock_service import StockDataService
+from app.graph.workflow import build_graph
 from app.schemas.analyze import AnalyzeRequest, AnalyzeResponse
-from app.core.logger import log
+from app.core.logger import log_with_trace
 
 
 class AnalyzeService:
 
     def __init__(self):
 
-        self.stock_service = StockDataService()
+        self.graph = build_graph()
 
 
-    def analyze(self, req: AnalyzeRequest) -> AnalyzeResponse:
+    async def analyze(self, req: AnalyzeRequest) -> AnalyzeResponse:
 
-        log.info(f"Fetching stock data: {req.stock_code}")
+        log_with_trace(f"Start analysis: {req.stock_code}")
 
-        stock_info = self.stock_service.get_stock_info(req.stock_code)
+        result = await self.graph.ainvoke({
 
-        log.info("Stock data fetched")
+            "question": req.question,
 
-        report = f"""
-股票代码: {stock_info.stock_code}
+            "stock_code": req.stock_code
+        })
 
-收盘价: {stock_info.price.close}
-
-PE: {stock_info.financial.pe}
-
-ROE: {stock_info.financial.roe}
-
-（AI分析后续接入 LangGraph）
-"""
+        log_with_trace("Graph execution completed")
 
         return AnalyzeResponse(
+
             stock_code=req.stock_code,
-            report=report
+
+            report=result["final_report"]
         )

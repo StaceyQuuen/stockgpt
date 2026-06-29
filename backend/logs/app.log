@@ -195,3 +195,8 @@
 2026-06-29 16:53:12.117 | INFO     | app.agents.news:run:9 - News Agent running
 2026-06-29 16:53:12.117 | INFO     | app.agents.risk:run:8 - Risk Agent running
 2026-06-29 16:53:12.118 | INFO     | app.agents.technical:run:8 - Technical Agent running
+2026-06-29 16:53:49.123 | INFO     | app.agents.news:run:9 - News Agent running
+2026-06-29 16:53:49.123 | INFO     | app.agents.risk:run:8 - Risk Agent running
+2026-06-29 16:53:49.123 | INFO     | app.agents.technical:run:8 - Technical Agent running
+2026-06-29 16:57:19.029 | INFO     | app.main:startup:24 - StockGPT API started
+2026-06-29 16:57:26.175 | INFO     | app.main:startup:24 - StockGPT API started

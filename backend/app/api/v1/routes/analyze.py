@@ -10,6 +10,6 @@ service = AnalyzeService()
 
 
 @router.post("/analyze", response_model=AnalyzeResponse)
-def analyze(req: AnalyzeRequest):
+async def analyze(req: AnalyzeRequest):
 
-    return service.analyze(req)
+    return await service.analyze(req)

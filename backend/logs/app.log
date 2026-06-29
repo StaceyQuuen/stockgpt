@@ -1,0 +1,6 @@
+2026-06-29 15:05:08.660 | INFO     | __main__:main:7 - Starting StockGPT
+2026-06-29 15:05:08.660 | INFO     | __main__:main:9 - Environment: dev
+2026-06-29 15:05:08.660 | INFO     | __main__:main:11 - StockGPT backend initialized successfully
+2026-06-29 15:06:01.556 | INFO     | __main__:main:7 - Starting StockGPT
+2026-06-29 15:06:01.556 | INFO     | __main__:main:9 - Environment: dev
+2026-06-29 15:06:01.556 | INFO     | __main__:main:11 - StockGPT backend initialized successfully

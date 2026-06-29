@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 
 from app.api.v1.routes.analyze import router as analyze_router
+from app.api.v1.routes.stream import router as stream_router
 
 from app.core.trace import generate_trace_id, set_trace_id
 from app.core.logger import log
@@ -31,6 +32,7 @@ async def trace_middleware(request: Request, call_next):
 
 
 app.include_router(analyze_router, prefix="/api/v1")
+app.include_router(stream_router, prefix="/api/v1")
 
 
 @app.get("/health")

@@ -1,6 +1,8 @@
 def main():
-    print("Hello from backend!")
+
+    print("🚀 StockGPT Backend Started")
 
 
 if __name__ == "__main__":
+
     main()

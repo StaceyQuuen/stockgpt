@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.routes.analyze import router as analyze_router
 from app.api.v1.routes.stream import router as stream_router
@@ -8,6 +9,18 @@ from app.core.logger import log
 
 
 app = FastAPI(title="StockGPT", version="0.1.0")
+
+
+# =========================
+# CORS Middleware
+# =========================
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # =========================

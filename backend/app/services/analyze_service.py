@@ -1,7 +1,8 @@
 from app.graph.workflow import build_graph
 from app.schemas.analyze import AnalyzeRequest, AnalyzeResponse
 from app.core.logger import log_with_trace
-
+from app.graph.workflow import build_graph
+from app.graph.workflow import cached_graph_invoke
 
 class AnalyzeService:
 
@@ -12,20 +13,16 @@ class AnalyzeService:
 
     async def analyze(self, req: AnalyzeRequest) -> AnalyzeResponse:
 
-        log_with_trace(f"Start analysis: {req.stock_code}")
+        result = cached_graph_invoke(
 
-        result = await self.graph.ainvoke({
+            self.graph,
 
-            "question": req.question,
+            {
 
-            "stock_code": req.stock_code
-        })
+                "stock_code": req.stock_code,
 
-        log_with_trace("Graph execution completed")
-
-        return AnalyzeResponse(
-
-            stock_code=req.stock_code,
-
-            report=result["final_report"]
+                "question": req.question
+            }
         )
+
+        return result

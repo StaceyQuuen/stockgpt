@@ -24,7 +24,7 @@ ROE: {data.financial.roe}
 
         return {
 
-            "stock_data": data.dict(),
+            "stock_data": data.model_dump(),
 
             "financial_analysis": analysis
         }

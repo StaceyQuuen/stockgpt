@@ -1,0 +1,57 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual env
+.venv/
+venv/
+env/
+ENV/
+
+# ======================
+# Backend runtime data
+# ======================
+backend/data/
+backend/logs/
+*.log
+
+# ======================
+# Env & secrets
+# ======================
+.env
+.env.local
+.env.*.local
+
+# ======================
+# IDE / Editor
+# ======================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ======================
+# Frontend (detailed rules in frontend/.gitignore)
+# ======================
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# ======================
+# OS / Misc
+# ======================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

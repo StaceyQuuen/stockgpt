@@ -1,6 +1,7 @@
 from app.rag.retriever import NewsRetriever
 from app.core.logger import log
-from langchain_ollama import ChatOllama
+from app.core.config import settings
+from langchain_openai import ChatOpenAI
 
 
 # 股票代码到名称映射（按需扩展）
@@ -20,12 +21,12 @@ THINK_CLOSE = "</" + "think>"
 class NewsAgent:
 
     def __init__(self):
-        self.llm = ChatOllama(
-            model="qwen3:4b",
-            base_url="http://127.0.0.1:11434",
+        self.llm = ChatOpenAI(
+            model=settings.LLM_MODEL,
+            base_url=settings.LLM_BASE_URL,
+            api_key=settings.OPENAI_API_KEY,
             timeout=60,
-            reasoning=False,
-            num_predict=300,
+            max_tokens=1024,
         )
 
     def run(self, state):

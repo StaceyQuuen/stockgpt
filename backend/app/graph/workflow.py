@@ -6,6 +6,7 @@ from app.agents.financial import FinancialAgent
 from app.agents.news import NewsAgent
 from app.agents.technical import TechnicalAgent
 from app.agents.risk import RiskAgent
+from app.agents.short_term import ShortTermAgent
 from app.agents.report import ReportAgent
 from app.core.cache import Cache
 
@@ -23,6 +24,8 @@ def build_graph():
 
     risk = RiskAgent()
 
+    short_term = ShortTermAgent()
+
     report = ReportAgent()
 
     # ======================
@@ -35,6 +38,8 @@ def build_graph():
     graph.add_node("technical", technical.run)
 
     graph.add_node("risk", risk.run)
+
+    graph.add_node("short_term", short_term.run)
 
     graph.add_node("report", report.run)
 
@@ -51,14 +56,16 @@ def build_graph():
     graph.add_edge("financial", "risk")
 
     # ======================
-    # 汇总（Fan-in）
+    # 汇总（Fan-in）→ short_term → report
     # ======================
 
-    graph.add_edge("news", "report")
+    graph.add_edge("news", "short_term")
 
-    graph.add_edge("technical", "report")
+    graph.add_edge("technical", "short_term")
 
-    graph.add_edge("risk", "report")
+    graph.add_edge("risk", "short_term")
+
+    graph.add_edge("short_term", "report")
 
     graph.add_edge("report", END)
 

@@ -1,7 +1,7 @@
 <template>
-  <Home />
+  <ShortTerm />
 </template>
 
 <script setup>
-import Home from "./views/Home.vue"
+import ShortTerm from "./components/ShortTerm.vue"
 </script>

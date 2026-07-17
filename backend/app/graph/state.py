@@ -27,3 +27,11 @@ class GraphState(TypedDict):
 
     # ⭐ 新增：并行控制字段
     analysis_ready: bool
+
+    # ========== 短线分析新增字段 ==========
+    kline_data: List[Dict[str, Any]] | None       # K线历史
+    indicators: Dict[str, Any] | None             # 技术指标
+    money_flow: Dict[str, Any] | None             # 资金流向
+    short_term_assessment: Dict[str, Any] | None  # 短线评估结果
+    short_term_analysis: str | None               # 短线分析文本
+    stock_name: str | None                        # 股票名称

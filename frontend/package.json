@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "stockgpt-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "axios": "^1.18.1",
-    "echarts": "^6.1.0",
     "vue": "^3.5.38"
   },
   "devDependencies": {

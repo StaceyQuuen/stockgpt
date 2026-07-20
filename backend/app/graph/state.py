@@ -35,3 +35,4 @@ class GraphState(TypedDict):
     short_term_assessment: Dict[str, Any] | None  # 短线评估结果
     short_term_analysis: str | None               # 短线分析文本
     stock_name: str | None                        # 股票名称
+    market_analysis: str | None                   # 大盘环境分析

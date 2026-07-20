@@ -3,6 +3,7 @@ from langgraph.graph import StateGraph, END
 from app.graph.state import GraphState
 
 from app.agents.financial import FinancialAgent
+from app.agents.market import MarketAgent
 from app.agents.news import NewsAgent
 from app.agents.technical import TechnicalAgent
 from app.agents.risk import RiskAgent
@@ -18,6 +19,8 @@ def build_graph():
 
     financial = FinancialAgent()
 
+    market = MarketAgent()
+
     news = NewsAgent()
 
     technical = TechnicalAgent()
@@ -32,6 +35,8 @@ def build_graph():
     # 注册节点
     # ======================
     graph.add_node("financial", financial.run)
+
+    graph.add_node("market", market.run)
 
     graph.add_node("news", news.run)
 
@@ -49,6 +54,9 @@ def build_graph():
 
     graph.set_entry_point("financial")
 
+    # financial 完成后并行启动 market/news/technical/risk
+    graph.add_edge("financial", "market")
+
     graph.add_edge("financial", "news")
 
     graph.add_edge("financial", "technical")
@@ -58,6 +66,8 @@ def build_graph():
     # ======================
     # 汇总（Fan-in）→ short_term → report
     # ======================
+
+    graph.add_edge("market", "short_term")
 
     graph.add_edge("news", "short_term")
 

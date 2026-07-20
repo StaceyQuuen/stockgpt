@@ -22,3 +22,10 @@ export async function searchStock(query) {
   })
   return resp.data
 }
+
+// ========== 股票池 ==========
+
+export async function getStockPool() {
+  const resp = await axios.get(`${API_BASE}/api/v1/stock-pool`)
+  return resp.data
+}

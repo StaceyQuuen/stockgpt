@@ -13,7 +13,7 @@ THINK_CLOSE = "</" + "think>"
 class ShortTermAgent:
     """
     短线适配性评估 Agent
-    汇总技术面、资金面、风险面、新闻情绪，通过 LLM 判断是否适合短线操作
+    汇总大盘环境、技术面、资金面、风险面、新闻情绪，通过 LLM 判断是否适合短线操作
     """
 
     def __init__(self):
@@ -33,8 +33,9 @@ class ShortTermAgent:
         news_analysis = state.get("news_analysis", "无")
         technical_analysis = state.get("technical_analysis", "无")
         risk_analysis = state.get("risk_analysis", "无")
+        market_analysis = state.get("market_analysis", "无")
 
-        # 数据不足兆底：如果技术指标全为 None，直接返回数据不足
+        # 数据不足兜底：如果技术指标全为 None，直接返回数据不足
         indicators = state.get("indicators")
         risk_data = state.get("risk")
         if (not indicators or indicators.get("ma5") is None) and \
@@ -56,16 +57,19 @@ class ShortTermAgent:
 
 【股票代码】{stock_code}
 
+【大盘环境】
+{market_analysis}
+
 【财务分析】
 {financial_analysis}
 
 【新闻分析】
 {news_analysis}
 
-【技术分析】
+【技术分析（含位置、量价、主力行为）】
 {technical_analysis}
 
-【风险评估】
+【风险评估（含买卖点、仓位建议）】
 {risk_analysis}
 
 请严格按照以下 JSON 格式输出，不要输出其他内容，不要输出思考过程：
@@ -79,14 +83,16 @@ class ShortTermAgent:
     "stop_profit": "止盈位及涨幅，如 16.8 (+8%)",
     "stop_loss": "止损位及跌幅，如 14.6 (-4%)",
     "position_ratio": "建议仓位比例，如 30%",
+    "position_advice": "仓位管理建议，如：确定性一般时先用30%仓位试探，确认走势后加仓",
     "hold_days": "预期持仓天数，如 3-5个交易日"
   }}
 }}
 
 评分维度（满分 100）：
-- 技术面（40分）：均线趋势、MACD、RSI、布林带位置
-- 波动/流动性（25分）：年化波动率、换手率、日均成交额
-- 资金面（20分）：主力资金流向（如有）
+- 大盘环境（10分）：强势/震荡/弱势市场，大盘是否有利于短线
+- 技术面（30分）：趋势、位置判断、量价关系、主力行为
+- 波动/流动性（20分）：年化波动率、换手率、日均成交额
+- 买卖点质量（25分）：买点信号强度、止盈止损合理性
 - 新闻情绪（15分）：利好/利空/中性
 
 要求：
@@ -94,6 +100,7 @@ class ShortTermAgent:
 - reasons 至少写 3 条，每条不超过 50 字
 - 不要编造数据，基于给出的分析结果判断
 - 只输出 JSON，不要有额外文字
+- 仓位管理要遵循：单只股票不要轻易满仓，确定性一般时先用30%~50%仓位
 """
 
         response = self.llm.invoke(prompt)
@@ -121,6 +128,7 @@ class ShortTermAgent:
 - 止盈位：{strategy.get('stop_profit', '待定')}
 - 止损位：{strategy.get('stop_loss', '待定')}
 - 建议仓位：{strategy.get('position_ratio', '待定')}
+- 仓位管理：{strategy.get('position_advice', '待定')}
 - 预期持仓：{strategy.get('hold_days', '待定')}
 """ if strategy else "\n策略数据解析异常\n"
         else:

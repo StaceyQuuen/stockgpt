@@ -183,6 +183,18 @@ class StockDataService:
         """获取股票名称"""
         return self.repo.get_stock_name(stock_code)
 
+    def get_market_data(self, days: int = 20) -> dict:
+        """获取大盘指数数据（带缓存）"""
+        cache_key = f"market_index:{days}"
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+
+        data = self.repo.get_market_index(days)
+        if data:
+            cache.set(cache_key, data, ttl=600)
+        return data
+
     # ========== 工具方法 ==========
 
     @staticmethod

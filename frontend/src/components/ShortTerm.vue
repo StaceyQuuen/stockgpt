@@ -47,6 +47,9 @@
         </div>
       </section>
 
+      <!-- ===== 股票池抽屉 ===== -->
+      <StockPool :visible="poolOpen" @close="poolOpen = false" @select="onPoolSelect" />
+
       <!-- ===== 分析进度 ===== -->
       <section v-if="analyzing || analysisDone" class="card">
         <h2 class="card-title">
@@ -158,12 +161,21 @@
         以上分析仅供参考，不构成投资建议。投资有风险，入市需谨慎。
       </div>
     </main>
+
+    <!-- FAB: 股票池 -->
+    <button class="pool-fab" :class="{ active: poolOpen }" @click="poolOpen = !poolOpen" title="短线股票池">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+      </svg>
+    </button>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue"
 import StockSearch from "./StockSearch.vue"
+import StockPool from "./StockPool.vue"
 import { streamShortTermAnalyze } from "../api/stock"
 
 const stockCode = ref("")
@@ -174,6 +186,7 @@ const rawOutput = ref("")
 const assessment = ref(null)
 const fullReport = ref("")
 const progressEvents = ref([])
+const poolOpen = ref(false)
 
 // 进度步骤映射
 const STEPS = [
@@ -217,6 +230,13 @@ function onStockSelect(item) {
 function clearSelection() {
   selectedStock.value = null
   stockCode.value = ""
+}
+
+function onPoolSelect(item) {
+  selectedStock.value = item
+  stockCode.value = item.code
+  poolOpen.value = false
+  startAnalysis()
 }
 
 function startAnalysis() {
@@ -742,5 +762,33 @@ function renderReport(text) {
   font-size: 12px;
   color: var(--text-muted);
   padding: 8px 0;
+}
+
+/* ===== Pool FAB ===== */
+.pool-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 28px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+  transition: all 0.25s;
+  z-index: 900;
+}
+.pool-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
+}
+.pool-fab.active {
+  background: var(--accent-hover);
+  transform: scale(0.92);
 }
 </style>
